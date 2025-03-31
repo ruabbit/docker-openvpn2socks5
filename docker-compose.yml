@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  minivpn2sock5:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: minivpn2sock5
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "1080:1080"
+    volumes:
+      - ./config.ovpn:/config.ovpn:ro
+    environment:
+      - LOG_LEVEL=info
+    restart: unless-stopped
+    command: --config /config.ovpn
+    # 如需用户名密码认证，取消下面注释并修改
+    # command: --config /config.ovpn --username your_username --password your_password 
