@@ -18,8 +18,8 @@ LOG_LEVEL="info"
 
 # 输出版本信息
 function print_version {
-  echo "docker-minivpn2sock5 v$VERSION"
-  echo "使用 minivpn 和 tun2socks 将 OpenVPN 转换为 SOCKS5 代理"
+  echo "docker-openvpn2socks5 v$VERSION"
+  echo "使用 OpenVPN 和 tun2socks 将 OpenVPN 转换为 SOCKS5 代理"
 }
 
 # 检查Docker容器运行环境

@@ -64,7 +64,7 @@ if [ ! -c /dev/net/tun ]; then
     chmod 600 /dev/net/tun
 fi
 
-# 启动minivpn
+# 准备OpenVPN认证
 CREDENTIALS=""
 if [ ! -z "$USERNAME" ] && [ ! -z "$PASSWORD" ]; then
     echo "$USERNAME" > /tmp/credentials
@@ -72,10 +72,10 @@ if [ ! -z "$USERNAME" ] && [ ! -z "$PASSWORD" ]; then
     CREDENTIALS="--auth-user-pass /tmp/credentials"
 fi
 
-# 在后台启动minivpn
-echo "启动minivpn..."
-minivpn -config "$CONFIG_FILE" $CREDENTIALS --tun-name tun0 &
-MINIVPN_PID=$!
+# 在后台启动OpenVPN
+echo "启动OpenVPN..."
+openvpn --config "$CONFIG_FILE" $CREDENTIALS --dev tun0 --script-security 2 &
+OPENVPN_PID=$!
 
 # 等待TUN设备准备就绪
 echo "等待TUN设备就绪..."
@@ -83,7 +83,7 @@ while ! ip link show tun0 >/dev/null 2>&1; do
     sleep 1
 done
 
-# 配置TUN设备
+# 确保TUN设备已经启动
 ip link set tun0 up
 
 # 启动tun2socks
@@ -92,10 +92,10 @@ tun2socks -device tun0 -proxy socks5://$SOCKS_ADDR &
 TUN2SOCKS_PID=$!
 
 # 捕获信号
-trap "kill $MINIVPN_PID $TUN2SOCKS_PID 2>/dev/null; exit" SIGINT SIGTERM
+trap "kill $OPENVPN_PID $TUN2SOCKS_PID 2>/dev/null; exit" SIGINT SIGTERM
 
 echo "服务已启动 - SOCKS5代理运行在 $SOCKS_ADDR"
 echo "按Ctrl+C停止服务..."
 
 # 等待子进程
-wait $MINIVPN_PID $TUN2SOCKS_PID 
+wait $OPENVPN_PID $TUN2SOCKS_PID 

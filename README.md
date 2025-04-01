@@ -1,10 +1,10 @@
-# docker-minivpn2sock5
+# docker-openvpn2socks5
 
-将OpenVPN连接转换为SOCKS5代理的Docker镜像，基于[minivpn](https://github.com/ooni/minivpn)和[tun2socks](https://github.com/xjasonlyu/tun2socks)项目。
+将OpenVPN连接转换为SOCKS5代理的Docker镜像，基于[官方OpenVPN客户端](https://openvpn.net/)和[tun2socks](https://github.com/xjasonlyu/tun2socks)项目。
 
 ## 功能
 
-- 使用minivpn连接到OpenVPN服务器
+- 使用官方OpenVPN客户端连接到OpenVPN服务器
 - 通过tun2socks将VPN流量转换为SOCKS5代理
 - 支持用户名/密码认证
 - 轻量级Debian基础镜像
@@ -12,7 +12,7 @@
 ## 构建镜像
 
 ```bash
-docker build -t minivpn2sock5 .
+docker build -t openvpn2socks5 .
 ```
 
 ## 使用方法
@@ -23,7 +23,7 @@ docker build -t minivpn2sock5 .
 docker run --rm -it --cap-add=NET_ADMIN \
   -v /path/to/your/config.ovpn:/config.ovpn \
   -p 1080:1080 \
-  minivpn2sock5 --config /config.ovpn
+  openvpn2socks5 --config /config.ovpn
 ```
 
 ### 带用户名和密码的认证
@@ -32,7 +32,7 @@ docker run --rm -it --cap-add=NET_ADMIN \
 docker run --rm -it --cap-add=NET_ADMIN \
   -v /path/to/your/config.ovpn:/config.ovpn \
   -p 1080:1080 \
-  minivpn2sock5 --config /config.ovpn --username your_username --password your_password
+  openvpn2socks5 --config /config.ovpn --username your_username --password your_password
 ```
 
 ### 自定义SOCKS5端口
@@ -41,7 +41,7 @@ docker run --rm -it --cap-add=NET_ADMIN \
 docker run --rm -it --cap-add=NET_ADMIN \
   -v /path/to/your/config.ovpn:/config.ovpn \
   -p 8888:8888 \
-  minivpn2sock5 --config /config.ovpn --socks-addr 0.0.0.0:8888
+  openvpn2socks5 --config /config.ovpn --socks-addr 0.0.0.0:8888
 ```
 
 ## 参数说明

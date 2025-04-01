@@ -1,12 +1,11 @@
 version: '3'
 
 services:
-  minivpn2sock5:
-    platform: linux/amd64
+  openvpn2socks5:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: minivpn2sock5
+    container_name: openvpn2socks5
     cap_add:
       - NET_ADMIN
     ports:

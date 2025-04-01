@@ -1,1 +1,1 @@
-docker build --platform linux/amd64 -t minivpn2sock5 .
+docker build -t openvpn2socks5 .
